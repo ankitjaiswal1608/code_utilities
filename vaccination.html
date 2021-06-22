@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Vaccination alert</title>
+</head>
+<body>
+	<h1 class="ml1" align="center">Vaccination Script</h1>
+	<p>https://chrome.google.com/webstore/detail/cowin-bot/ipdhilmkmmbfeilncgchfdabkpnhbeog?hl=en</p>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    	$(document).ready(function() {
+
+    		var timeout = 15000;
+			var action = function() {
+			    console.log("Attempting..");
+			    vaccineFunction();
+			};
+			setInterval(action, timeout);
+    	})
+
+    	var vaccineFunction = function() {
+    		
+    		var vaccineAvailable = false;
+
+    		var URL = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=314&date=10-06-2021";
+			$.getJSON( URL, {
+				format: "json"
+			})
+			.done(function(data) {
+				$.each(data.centers, function(i, center) {
+
+					$.each(center.sessions, function(j, session) {
+
+						if (session.min_age_limit == 18 && session.vaccine == "COVAXIN" && session.available_capacity_dose2 > 10) {
+
+							alert("!!!Vaccine aa gyi!!!");
+							vaccineAvailable = true;
+						}
+
+						if (vaccineAvailable) return false;
+					})
+
+					if (vaccineAvailable) return false;
+				})
+			})
+    	}
+    </script>
+</body>
+</html>
